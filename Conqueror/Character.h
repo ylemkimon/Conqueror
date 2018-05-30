@@ -7,9 +7,9 @@ class Character {
 protected:
 	Controller& controller;
 public:
+	float color;
 	int pos[2];
 	Direction heading[2];
-	float color;
 
 	int row();
 	int col();

@@ -12,7 +12,7 @@ static float HUES[HUES_LEGNTH] = { 0, .04f, .08f, .11f, .14f, .18f, .21f, .25f, 
 
 Controller::Controller() : step(), data(new int*[MAP_SIZE]), filled()
 {
-	std::srand(std::time(NULL));
+	std::srand(unsigned(std::time(NULL)));
 	std::random_shuffle(HUES, HUES + HUES_LEGNTH);
 
 	player = new Player(*this, HUES[0]);

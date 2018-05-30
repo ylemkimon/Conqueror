@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include "Constants.h"
 #include "Renderer.h"
 #include "Segment.h"
