@@ -32,7 +32,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4CA7D83D-4D13-4409-84D0-60CB247DAE87}</ProjectGuid>
-    <RootNamespace>P1W7</RootNamespace>
+    <RootNamespace>Conqueror</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>Conqueror</ProjectName>
   </PropertyGroup>
