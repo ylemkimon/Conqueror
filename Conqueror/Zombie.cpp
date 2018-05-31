@@ -23,7 +23,7 @@ void Zombie::move(int step) {
 			r = row();
 			c = col();
 			float rand = (float)std::rand() / RAND_MAX;
-			heading[1] = rand < 0.6f ? (Direction)((int)(rand / 0.3f) * 2 + 1) : heading[1];
+			heading[1] = rand < 0.6f ? (Direction)((int)(rand / 0.15f) + 1) : heading[1];
 			shift(c, r, heading[1]);
 		} while (controller.isOutOfBounds(r, c) || controller.get(r, c) > 0);
 	}
