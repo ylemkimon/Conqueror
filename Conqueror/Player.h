@@ -2,7 +2,6 @@
 #include <vector>
 #include <queue>
 
-#include "Controller.h"
 #include "Segment.h"
 #include "Character.h"
 
@@ -17,9 +16,11 @@ class Player : public Character {
 public:
 	Player(Controller&, float);
 
+	int life;
 	int* getBase();
 	std::vector<Segment>& getTrail();
 
+	void resetTrail();
 	virtual void move(int);
 	virtual void die();
 };

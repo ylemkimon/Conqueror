@@ -1,4 +1,3 @@
-#include "Constants.h"
 #include "Renderer.h"
 #include "Segment.h"
 #include "Player.h"
@@ -43,7 +42,16 @@ void drawCorner(int x, int y, Direction prev, Direction curr) {
 	glEnd();
 }
 
-Renderer::Renderer(Controller &controller) : controller(controller)
+void drawHeart(int x) {
+	glRectf(x + .5f, MAP_SIZE + 5, x + 1.5f, MAP_SIZE + 4.5f);
+	glRectf(x + 2, MAP_SIZE + 5, x + 3, MAP_SIZE + 4.5f);
+	glRectf(x, MAP_SIZE + 4.5f, x + 3.5f, MAP_SIZE + 3);
+	glRectf(x + .5f, MAP_SIZE + 3, x + 3, MAP_SIZE + 2.5f);
+	glRectf(x + 1, MAP_SIZE + 2.5f, x + 2.5f, MAP_SIZE + 2);
+	glRectf(x + 1.5f, MAP_SIZE + 2, x + 2, MAP_SIZE + 1.5f);
+}
+
+Renderer::Renderer(Controller &controller) : controller(controller), bar_target()
 {
 }
 
@@ -54,6 +62,15 @@ void Renderer::draw()
 	drawTrail();
 	drawCharacters();
 	drawUI();
+	/*glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glBegin(GL_POLYGON);
+		glTexCoord2f(0, 0); glVertex2f(30, 30);
+		glTexCoord2f(1, 0); glVertex2f(60, 30);
+		glTexCoord2f(1, 1); glVertex2f(60, 60);
+		glTexCoord2f(0, 1); glVertex2f(30, 60);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);*/
 }
 
 void Renderer::drawBorder()
@@ -154,8 +171,45 @@ void Renderer::drawTrail()
 void Renderer::drawUI()
 {
 	Player& p = *controller.getPlayer();
-	float hue = p.color;
-	Color playerColor(hue, .8f, .6f, 1);
+
+	glColor3f(1, 0, 0);
+	for (int i = 0; i < INITIAL_LIFE; i++) {
+		if (i == p.life) {
+			glColor3f(.2f, .2f, .2f);
+		}
+		drawHeart(HEART_WIDTH * i);
+	}
+	int start = HEART_WIDTH * INITIAL_LIFE + 1;
+
+	char buffer[10];
+	int len = sprintf(buffer, "KILLS: %d", ZOMBIE_COUNT + 1 - controller.characters.size());
+	int end = MAP_SIZE - len;
+
+	glColor3f(0, 0, 0);
+	glRasterPos2f(end, MAP_SIZE + 2.5f);
+	for (int i = 0; i < len; i++) {
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, buffer[i]);
+	}
+
+	if (bar_target < controller.filled) {
+		bar_target++;
+	}
+	float ratio = (float)bar_target / (MAP_SIZE * MAP_SIZE);
+	float bar_length = ratio * (end - start);
+
+	Color playerColor(p.color, .8f, .6f, 1);
 	glColor4fv(playerColor.rgba);
-	glRectf(0, MAP_SIZE + 2, (float)controller.filled / MAP_SIZE, MAP_SIZE + 5);
+	glRectf(start, MAP_SIZE + 1.5f, start + bar_length, MAP_SIZE + 5);
+
+	len = sprintf(buffer, "%.2f %%", ratio * 100);
+	if (bar_length < len + 1.3f) {
+		glRasterPos2f(start + bar_length + .8f, MAP_SIZE + 2.5f);
+	}
+	else {
+		glColor3f(1, 1, 1);
+		glRasterPos2f(start + bar_length - len - .8f, MAP_SIZE + 2.5f);
+	}
+	for (int i = 0; i < len; i++) {
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, buffer[i]);
+	}
 }

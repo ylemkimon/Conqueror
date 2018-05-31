@@ -3,7 +3,7 @@
 #define INITIAL_RANGE 3
 
 #define SHADOW_SIZE 0.3f
-#define UI_SIZE 8
+#define HEART_WIDTH 4
 
 #define STEP_SIZE 5
 
@@ -13,12 +13,17 @@
 #define TAIL -1
 #define VISITED -2
 
+#define WIN -2
+#define LOSE -3
+
 #define CLEAR_COLOR 1, 0.9804f, 0.8039f
 
 #define COS_PI_50 0.99802672842827156
 #define SIN_PI_50 0.06279051952931338
 
+#define INITIAL_LIFE 3
 #define ZOMBIE_COUNT 5
+#define WIN_CONDITION 0.9f
 
 const float BOUNCE[TERRITORY + 1] = { .7f, .6f, .5f, .4f, .3f, .2f, .1f, 0, .1f, .2f, .3f, .4f, .3f, .2f, .1f, 0, .1f, .2f, .1f, 0 };
 

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <random>
 #include <ctime>
 
@@ -27,7 +26,6 @@ Controller::Controller() : step(), data(new int*[MAP_SIZE]), filled()
 
 	player = new Player(*this, HUES[0]);
 	characters = { player };
-
 	for (int i = 0; i < ZOMBIE_COUNT; i++) {
 		characters.push_back(new Zombie(*this, HUES[i + 1]));
 	}
@@ -71,6 +69,9 @@ Player* Controller::getPlayer()
 
 void Controller::updateFrame()
 {
+	if (step < 0) {
+		return;
+	}
 	for (const auto& character : characters) {
 		character->move(step);
 	}
@@ -85,6 +86,9 @@ void Controller::updateFrame()
 				player->die();
 			}
 		}
+		if (player->life == 0) {
+			step = WIN;
+		}
 	}
 	else if (step == STEP_SIZE - 1) {
 		std::vector<Character*>::iterator it = characters.begin();
@@ -96,6 +100,9 @@ void Controller::updateFrame()
 			else {
 				++it;
 			}
+		}
+		if ((float)filled / (MAP_SIZE * MAP_SIZE) > WIN_CONDITION) {
+			step = LOSE;
 		}
 	}
 	step = (step + 1) % STEP_SIZE;

@@ -4,7 +4,11 @@
 
 class Renderer {
 	Controller& controller;
+
+	int bar_target;
 public:
+	unsigned int texture_id;
+
 	Renderer(Controller&);
 
 	void draw();

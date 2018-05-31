@@ -1,9 +1,7 @@
-#include <iostream>
-
 #include "Player.h"
 
 Player::Player(Controller &controller, float color) :
-	Character(controller, color), trail(), base()
+	Character(controller, color), trail(), base(), life(INITIAL_LIFE)
 {
 	pos[0] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
 	pos[1] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
@@ -19,6 +17,17 @@ std::vector<Segment>& Player::getTrail()
 	return trail;
 }
 
+void Player::resetTrail() {
+	trail.clear();
+	for (int r = 0; r < MAP_SIZE; r++) {
+		for (int c = 0; c < MAP_SIZE; c++) {
+			if (controller.getData(r, c) < 0) {
+				controller.setData(r, c, 0);
+			}
+		}
+	}
+}
+
 void Player::move(int step)
 {
 	Character::move(step);
@@ -31,31 +40,22 @@ void Player::move(int step)
 		else if (state > 0) {
 			if (!trail.empty()) {
 				traverseTrail();
+				resetTrail();
 			}
 			base[0] = row();
 			base[1] = col();
 		}
 	}
-
-	// if dead explosion
 }
 
 void Player::die()
 {
 	pos[0] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
 	pos[1] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
-	base[0] = row();
-	base[1] = col();
-	trail = {};
-	for (int r = 0; r < MAP_SIZE; r++) {
-		for (int c = 0; c < MAP_SIZE; c++) {
-			if (controller.getData(r, c) < 0) {
-				controller.setData(r, c, 0);
-			}
-		}
-	}
 	heading[0] = NONE;
 	heading[1] = NONE;
+	resetTrail();
+	life--;
 }
 
 void Player::updateTrail()
@@ -92,15 +92,6 @@ void Player::traverseTrail()
 		_traverseTrail(r - 1, c, queue);
 		_traverseTrail(r, c + 1, queue);
 		_traverseTrail(r, c - 1, queue);
-	}
-
-	trail = {};
-	for (int r = 0; r < MAP_SIZE; r++) {
-		for (int c = 0; c < MAP_SIZE; c++) {
-			if (controller.getData(r, c) < 0) {
-				controller.setData(r, c, 0);
-			}
-		}
 	}
 }
 

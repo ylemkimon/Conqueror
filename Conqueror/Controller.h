@@ -5,11 +5,11 @@ class Character;
 class Player;
 
 class Controller {
-	int step;
 	int **data;
 	Player* player;
 
 public:
+	int step;
 	int filled;
 	std::vector<Character*> characters;
 

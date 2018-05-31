@@ -7,4 +7,3 @@ public:
 	Zombie(Controller& controller, float color);
 	virtual void move(int);
 };
-
