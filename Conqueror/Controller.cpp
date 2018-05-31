@@ -4,6 +4,7 @@
 
 #include "Controller.h"
 #include "Player.h"
+#include "Zombie.h"
 
 #include <GL/glut.h>
 
@@ -15,9 +16,6 @@ Controller::Controller() : step(), data(new int*[MAP_SIZE]), filled()
 	std::srand(unsigned(std::time(NULL)));
 	std::random_shuffle(HUES, HUES + HUES_LEGNTH);
 
-	player = new Player(*this, HUES[0]);
-	characters = { player };
-
 	for (int i = 0; i < MAP_SIZE; i++) {
 		data[i] = new int[MAP_SIZE]();
 	}
@@ -25,6 +23,13 @@ Controller::Controller() : step(), data(new int*[MAP_SIZE]), filled()
 		for (int j = -INITIAL_RANGE; j <= INITIAL_RANGE; j++) {
 			set((MAP_SIZE + 1) / 2 + i, (MAP_SIZE + 1) / 2 + j, TERRITORY);
 		}
+	}
+
+	player = new Player(*this, HUES[0]);
+	characters = { player };
+
+	for (int i = 0; i < ZOMBIE_COUNT; i++) {
+		characters.push_back(new Zombie(*this, HUES[i + 1]));
 	}
 }
 
@@ -70,9 +75,26 @@ void Controller::updateFrame()
 		character->move(step);
 	}
 	if (step == 0) {
+		int r = player->row();
+		int c = player->col();
 		for (const auto& character : characters) {
-			if (get(character->row(), character->col()) == TAIL && character->heading[0] != NONE) {
+			int cr = character->row();
+			int cc = character->col();
+			if ((get(cr, cc) == TAIL && character->heading[0] != NONE) ||
+				(character != player && cr == r && cc == c)) {
 				player->die();
+			}
+		}
+	}
+	else if (step == STEP_SIZE - 1) {
+		std::vector<Character*>::iterator it = characters.begin();
+		while (it != characters.end()) {
+			if (*it != player && get((*it)->row(), (*it)->col()) > 0) {
+				(*it)->die();
+				it = characters.erase(it);
+			}
+			else {
+				++it;
 			}
 		}
 	}

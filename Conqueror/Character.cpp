@@ -23,6 +23,10 @@ void Character::move(int step)
 	shift(pos[0], pos[1], heading[0]);
 }
 
+void Character::die()
+{
+}
+
 void Character::changeHeading(Direction newHeading)
 {
 	if (heading[0] == NONE) {

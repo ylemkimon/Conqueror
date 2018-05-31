@@ -18,6 +18,8 @@
 #define COS_PI_50 0.99802672842827156
 #define SIN_PI_50 0.06279051952931338
 
+#define ZOMBIE_COUNT 5
+
 const float BOUNCE[TERRITORY + 1] = { .7f, .6f, .5f, .4f, .3f, .2f, .1f, 0, .1f, .2f, .3f, .4f, .3f, .2f, .1f, 0, .1f, .2f, .1f, 0 };
 
 const float BORDER_COLOR[] = { .8275f, .8275f, .8275f };
