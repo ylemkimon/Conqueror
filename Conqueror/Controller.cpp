@@ -21,7 +21,7 @@ Controller::Controller() : step(), data(new int*[MAP_SIZE]), filled()
 	}
 	for (int i = -INITIAL_RANGE; i <= INITIAL_RANGE; i++) {
 		for (int j = -INITIAL_RANGE; j <= INITIAL_RANGE; j++) {
-			set((MAP_SIZE + 1) / 2 + i, (MAP_SIZE + 1) / 2 + j, TERRITORY);
+			setData((MAP_SIZE + 1) / 2 + i, (MAP_SIZE + 1) / 2 + j, TERRITORY);
 		}
 	}
 
@@ -46,22 +46,22 @@ Controller::~Controller()
 	delete[] data;
 }
 
-int Controller::get(int row, int col) const
+bool Controller::hasData(int row, int col) const
+{
+	return row >= 0 && col >= 0 && row < MAP_SIZE && col < MAP_SIZE;
+}
+
+int Controller::getData(int row, int col) const
 {
 	return data[row][col];
 }
 
-void Controller::set(int row, int col, int value)
+void Controller::setData(int row, int col, int value)
 {
 	data[row][col] = value;
 	if (value == TERRITORY) {
 		filled++;
 	}
-}
-
-bool Controller::isOutOfBounds(int row, int col) const
-{
-	return row < 0 || col < 0 || row >= MAP_SIZE || col >= MAP_SIZE;
 }
 
 Player* Controller::getPlayer()
@@ -80,7 +80,7 @@ void Controller::updateFrame()
 		for (const auto& character : characters) {
 			int cr = character->row();
 			int cc = character->col();
-			if ((get(cr, cc) == TAIL && character->heading[0] != NONE) ||
+			if ((getData(cr, cc) == TAIL && character->heading[0] != NONE) ||
 				(character != player && cr == r && cc == c)) {
 				player->die();
 			}
@@ -89,7 +89,7 @@ void Controller::updateFrame()
 	else if (step == STEP_SIZE - 1) {
 		std::vector<Character*>::iterator it = characters.begin();
 		while (it != characters.end()) {
-			if (*it != player && get((*it)->row(), (*it)->col()) > 0) {
+			if (*it != player && getData((*it)->row(), (*it)->col()) > 0) {
 				(*it)->die();
 				it = characters.erase(it);
 			}

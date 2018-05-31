@@ -33,7 +33,7 @@ void Character::changeHeading(Direction newHeading)
 		int r = row();
 		int c = col();
 		shift(c, r, newHeading);
-		if (controller.isOutOfBounds(r, c) || controller.get(r, c) == TAIL) {
+		if (!controller.hasData(r, c) || controller.getData(r, c) == TAIL) {
 			return;
 		}
 	}

@@ -72,25 +72,24 @@ void Renderer::drawMap()
 
 	for (int r = MAP_SIZE - 1; r >= 0; r--) {
 		for (int c = 0; c < MAP_SIZE; c++) {
-			int state = controller.get(r, c);
+			int state = controller.getData(r, c);
 			if (state <= 0) {
 				continue;
 			}
 			float y = r + BOUNCE[state];
 
-			if (!controller.isOutOfBounds(r - 1, c)) {
-				int bottomState = controller.get(r - 1, c);
-				if ((state == TERRITORY) != (bottomState == TERRITORY) || bottomState <= 0) {
-					glColor4fv(shadowColor.rgba);
-					glRectf(c, y - SHADOW_SIZE, c + 1, y);
-				}
+			int bottomState = controller.hasData(r - 1, c) ? controller.getData(r - 1, c) : TERRITORY;
+			if ((state == TERRITORY) != (bottomState == TERRITORY) || bottomState <= 0) {
+				glColor4fv(shadowColor.rgba);
+				glRectf(c, y - SHADOW_SIZE, c + 1, y);
 			}
+
 			Color bounceColor(hue, .8f, .6f - BOUNCE[state] / 6, 1.f);
 			glColor4fv(bounceColor.rgba);
 			glRectf(c, y, c + 1, y + 1);
 
 			if (state < TERRITORY) {
-				controller.set(r, c, state + 1);
+				controller.setData(r, c, state + 1);
 			}
 		}
 	}

@@ -16,9 +16,10 @@ public:
 	Controller();
 	~Controller();
 
-	int get(int, int) const;
-	void set(int, int, int);
-	bool isOutOfBounds(int, int) const;
+	bool hasData(int, int) const;
+	int getData(int, int) const;
+	void setData(int, int, int);
+
 	Player* getPlayer();
 
 	void updateFrame();

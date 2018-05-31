@@ -24,7 +24,7 @@ void Player::move(int step)
 	Character::move(step);
 
 	if (step == STEP_SIZE - 1) {
-		int state = controller.get(row(), col());
+		int state = controller.getData(row(), col());
 		if (state == 0) {
 			updateTrail();
 		}
@@ -49,8 +49,8 @@ void Player::die()
 	trail = {};
 	for (int r = 0; r < MAP_SIZE; r++) {
 		for (int c = 0; c < MAP_SIZE; c++) {
-			if (controller.get(r, c) < 0) {
-				controller.set(r, c, 0);
+			if (controller.getData(r, c) < 0) {
+				controller.setData(r, c, 0);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ void Player::updateTrail()
 		trail.push_back(Segment{ heading[0], 0 });
 	}
 	trail.back().length++;
-	controller.set(row(), col(), TAIL);
+	controller.setData(row(), col(), TAIL);
 }
 
 void Player::traverseTrail()
@@ -82,7 +82,7 @@ void Player::traverseTrail()
 		queue[1].pop();
 
 		if (!first) {
-			controller.set(r, c, 1);
+			controller.setData(r, c, 1);
 		}
 		else {
 			first = false;
@@ -97,23 +97,24 @@ void Player::traverseTrail()
 	trail = {};
 	for (int r = 0; r < MAP_SIZE; r++) {
 		for (int c = 0; c < MAP_SIZE; c++) {
-			if (controller.get(r, c) < 0) {
-				controller.set(r, c, 0);
+			if (controller.getData(r, c) < 0) {
+				controller.setData(r, c, 0);
 			}
 		}
 	}
 }
 
 void Player::_traverseTrail(int r, int c, std::queue<int> *queue) {
-	if (!controller.isOutOfBounds(r, c)) {
-		int state = controller.get(r, c);
-		if (state == 0) {
-			fill(r, c);
-		}
-		else if (state == TAIL) {
-			queue[0].push(r);
-			queue[1].push(c);
-		}
+	if (!controller.hasData(r, c)) {
+		return;
+	}
+	int state = controller.getData(r, c);
+	if (state == 0) {
+		fill(r, c);
+	}
+	else if (state == TAIL) {
+		queue[0].push(r);
+		queue[1].push(c);
 	}
 }
 
@@ -132,18 +133,18 @@ void Player::fill(int row, int col) {
 		queue[0].pop();
 		queue[1].pop();
 
-		if (controller.isOutOfBounds(r, c)) {
+		if (!controller.hasData(r, c)) {
 			closed = false;
 			toFill[0] = {};
 			toFill[1] = {};
 			continue;
 		}
 
-		if (controller.get(r, c) != 0) {
+		if (controller.getData(r, c) != 0) {
 			continue;
 		}
 
-		controller.set(r, c, VISITED);
+		controller.setData(r, c, VISITED);
 
 		if (closed) {
 			toFill[0].push(r);
@@ -170,6 +171,6 @@ void Player::fill(int row, int col) {
 		toFill[0].pop();
 		toFill[1].pop();
 
-		controller.set(r, c, 1);
+		controller.setData(r, c, 1);
 	}
 }
