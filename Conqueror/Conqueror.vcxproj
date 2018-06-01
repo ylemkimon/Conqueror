@@ -34,6 +34,7 @@
     <Image Include="text.png" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="death.wav" />
     <Media Include="kill.wav" />
     <Media Include="drop.wav" />
     <Media Include="gameover.wav" />

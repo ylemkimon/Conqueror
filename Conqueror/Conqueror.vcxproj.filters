@@ -87,5 +87,8 @@
     <Media Include="win.wav">
       <Filter>리소스 파일</Filter>
     </Media>
+    <Media Include="death.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
   </ItemGroup>
 </Project>
