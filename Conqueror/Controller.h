@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#include "Constants.h"
+
 #ifdef USE_SOUND
 #include <irrKlang.h>
 #endif
@@ -9,7 +11,7 @@ class Character;
 class Player;
 
 class Controller {
-	int **data;
+	int data[MAP_SIZE][MAP_SIZE];
 	Player* player;
 
 #ifdef USE_SOUND
