@@ -18,7 +18,6 @@
 #define FILL 1
 #define TERRITORY 19
 #define TAIL -1
-#define VISITED -2
 
 #define WIN -2
 #define LOSE -3

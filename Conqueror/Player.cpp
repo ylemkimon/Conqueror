@@ -17,17 +17,6 @@ std::vector<Segment>& Player::getTrail()
 	return trail;
 }
 
-void Player::resetTrail() {
-	trail.clear();
-	for (int r = 0; r < MAP_SIZE; r++) {
-		for (int c = 0; c < MAP_SIZE; c++) {
-			if (controller.getData(r, c) < 0) {
-				controller.setData(r, c, 0);
-			}
-		}
-	}
-}
-
 void Player::move(int step)
 {
 	Character::move(step);
@@ -40,7 +29,7 @@ void Player::move(int step)
 		else if (state > 0) {
 			if (!trail.empty()) {
 				traverseTrail();
-				resetTrail();
+				trail.clear();
 
 				controller.playSound("drop.wav");
 			}
@@ -56,7 +45,14 @@ void Player::die()
 	pos[1] = CENTER_COORD;
 	heading[0] = NONE;
 	heading[1] = NONE;
-	resetTrail();
+	trail.clear();
+	for (int r = 0; r < MAP_SIZE; r++) {
+		for (int c = 0; c < MAP_SIZE; c++) {
+			if (controller.getData(r, c) < 0) {
+				controller.setData(r, c, 0);
+			}
+		}
+	}
 	life--;
 }
 
@@ -91,6 +87,9 @@ void Player::traverseTrail()
 	queue[0].push(base[0]);
 	queue[1].push(base[1]);
 
+	std::unordered_set<int> toFill;
+	int value = TAIL - 1;
+
 	bool first = true;
 	while (!queue[0].empty()) {
 		int r = queue[0].front();
@@ -106,20 +105,35 @@ void Player::traverseTrail()
 			first = false;
 		}
 
-		_traverseTrail(r + 1, c, queue);
-		_traverseTrail(r - 1, c, queue);
-		_traverseTrail(r, c + 1, queue);
-		_traverseTrail(r, c - 1, queue);
+		_traverseTrail(r + 1, c, value, queue, toFill);
+		_traverseTrail(r - 1, c, value, queue, toFill);
+		_traverseTrail(r, c + 1, value, queue, toFill);
+		_traverseTrail(r, c - 1, value, queue, toFill);
+	}
+
+	for (int r = 0; r < MAP_SIZE; r++) {
+		for (int c = 0; c < MAP_SIZE; c++) {
+			int state = controller.getData(r, c);
+			if (toFill.find(state) != toFill.end()) {
+				controller.setData(r, c, FILL);
+			}
+			else if (state < 0) {
+				controller.setData(r, c, 0);
+			}
+		}
 	}
 }
 
-void Player::_traverseTrail(int r, int c, std::queue<int> *queue) {
+void Player::_traverseTrail(int r, int c, int &value, std::queue<int> *queue, std::unordered_set<int> &toFill) {
 	if (!controller.hasData(r, c)) {
 		return;
 	}
 	int state = controller.getData(r, c);
 	if (state == 0) {
-		fill(r, c);
+		if (fill(r, c, value)) {
+			toFill.insert(value);
+		}
+		value--;
 	}
 	else if (state == TAIL) {
 		queue[0].push(r);
@@ -127,11 +141,10 @@ void Player::_traverseTrail(int r, int c, std::queue<int> *queue) {
 	}
 }
 
-void Player::fill(int row, int col) {
+bool Player::fill(int row, int col, int value) {
 	bool closed = true;
 
 	std::queue<int> queue[2];
-	std::queue<int> toFill[2]; // TODO : use set instead of queue
 	queue[0].push(row);
 	queue[1].push(col);
 
@@ -144,8 +157,6 @@ void Player::fill(int row, int col) {
 
 		if (!controller.hasData(r, c)) {
 			closed = false;
-			toFill[0] = {};
-			toFill[1] = {};
 			continue;
 		}
 
@@ -153,12 +164,7 @@ void Player::fill(int row, int col) {
 			continue;
 		}
 
-		controller.setData(r, c, VISITED);
-
-		if (closed) {
-			toFill[0].push(r);
-			toFill[1].push(c);
-		}
+		controller.setData(r, c, value);
 
 		queue[0].push(r + 1);
 		queue[1].push(c);
@@ -172,14 +178,5 @@ void Player::fill(int row, int col) {
 		queue[0].push(r);
 		queue[1].push(c - 1);
 	}
-
-	while (!toFill[0].empty()) {
-		int r = toFill[0].front();
-		int c = toFill[1].front();
-
-		toFill[0].pop();
-		toFill[1].pop();
-
-		controller.setData(r, c, FILL);
-	}
+	return closed;
 }

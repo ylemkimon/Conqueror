@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <queue>
+#include <unordered_set>
 
 #include "Segment.h"
 #include "Character.h"
@@ -11,8 +12,8 @@ class Player : public Character {
 
 	void updateTrail();
 	void traverseTrail();
-	void _traverseTrail(int, int, std::queue<int> *);
-	void fill(int, int);
+	void _traverseTrail(int, int, int &, std::queue<int> *, std::unordered_set<int> &);
+	bool fill(int, int, int);
 public:
 	Player(Controller&, float);
 
@@ -20,7 +21,6 @@ public:
 	int* getBase();
 	std::vector<Segment>& getTrail();
 
-	void resetTrail();
 	virtual void move(int);
 	virtual void die();
 	void changeHeading(Direction);
