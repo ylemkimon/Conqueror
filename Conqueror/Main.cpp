@@ -3,6 +3,11 @@
 
 #include "Renderer.h"
 
+#ifdef USE_TEXTURE
+#define STB_IMAGE_IMPLEMENTATION 
+#include "stb_image.h"
+#endif
+
 #include <GL/glut.h>
 
 Controller controller;
@@ -21,7 +26,7 @@ void display() {
 void idle() {
 	static clock_t previousTime = clock();
 	clock_t currentTime = clock();
-	if (currentTime - previousTime < 16) {
+	if (currentTime - previousTime < FRAME_INTERVAL) {
 		return;
 	}
 	previousTime = currentTime;
@@ -35,9 +40,10 @@ int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(150, 100);
-	glutInitWindowSize(900, 900);
+	glutInitWindowSize(830, 880); // TODO : window size
 	glutCreateWindow("Conqueror");
 
+	// TODO : viewport
 	//glutGameModeString("1024x600:32@60");
 	//glutEnterGameMode();
 
@@ -47,42 +53,26 @@ int main(int argc, char **argv) {
 
 	glClearColor(CLEAR_COLOR, 1);
 
-	//int w, h;
-	//unsigned int size, offset, headerSize;
-	//std::ifstream infile("text.bmp", std::ios::binary);
-	//infile.seekg(10);
-	//infile.read((char *)&offset, 4);
-	//infile.read((char *)&headerSize, 4);
-	//infile.seekg(18);
-	//infile.read((char *)&w, 4);
-	//infile.read((char *)&h, 4);
-	//size = w * h * 24;
-	//unsigned char *data = new unsigned char[size];
+#ifdef USE_TEXTURE
+	int w, h, comp;
+	unsigned char* image = stbi_load("text.png", &w, &h, &comp, STBI_rgb_alpha);
 
-	//infile.seekg(offset);
-	//infile.read((char *)data, size);
+	unsigned int texture_id;
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGBA,
+		w, h, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE,
+		image
+	);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	renderer.texture_id = texture_id;
 
-	//int temp;
-	//for (unsigned int i = 0; i < size; i += 3)
-	//{
-	//	temp = data[i];
-	//	data[i] = data[i + 2];
-	//	data[i + 2] = temp;
-	//}
-
-	//unsigned int texture_id;
-	//glGenTextures(1, &texture_id);
-	//glBindTexture(GL_TEXTURE_2D, texture_id);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexImage2D(
-	//	GL_TEXTURE_2D, 0, GL_RGB,
-	//	256, 256, 0,
-	//	GL_RGB, GL_UNSIGNED_BYTE,
-	//	data
-	//);
-	//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	//renderer.texture_id = texture_id;
+	stbi_image_free(image);
+#endif
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

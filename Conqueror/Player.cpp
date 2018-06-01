@@ -3,8 +3,8 @@
 Player::Player(Controller &controller, float color) :
 	Character(controller, color), trail(), base(), life(INITIAL_LIFE)
 {
-	pos[0] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
-	pos[1] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
+	pos[0] = CENTER_COORD;
+	pos[1] = CENTER_COORD;
 }
 
 int* Player::getBase()
@@ -41,6 +41,8 @@ void Player::move(int step)
 			if (!trail.empty()) {
 				traverseTrail();
 				resetTrail();
+
+				controller.playSound("drop.wav");
 			}
 			base[0] = row();
 			base[1] = col();
@@ -50,8 +52,8 @@ void Player::move(int step)
 
 void Player::die()
 {
-	pos[0] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
-	pos[1] = (MAP_SIZE + 1) / 2 * STEP_SIZE;
+	pos[0] = CENTER_COORD;
+	pos[1] = CENTER_COORD;
 	heading[0] = NONE;
 	heading[1] = NONE;
 	resetTrail();
@@ -82,7 +84,7 @@ void Player::traverseTrail()
 		queue[1].pop();
 
 		if (!first) {
-			controller.setData(r, c, 1);
+			controller.setData(r, c, FILL);
 		}
 		else {
 			first = false;
@@ -113,7 +115,7 @@ void Player::fill(int row, int col) {
 	bool closed = true;
 
 	std::queue<int> queue[2];
-	std::queue<int> toFill[2];
+	std::queue<int> toFill[2]; // TODO : use set instead of queue
 	queue[0].push(row);
 	queue[1].push(col);
 
@@ -162,6 +164,6 @@ void Player::fill(int row, int col) {
 		toFill[0].pop();
 		toFill[1].pop();
 
-		controller.setData(r, c, 1);
+		controller.setData(r, c, FILL);
 	}
 }

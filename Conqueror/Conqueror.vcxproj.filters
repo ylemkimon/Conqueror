@@ -30,10 +30,10 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Zombie.cpp">
+    <ClCompile Include="Color.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
+    <ClCompile Include="MarkovZombie.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,11 +56,36 @@
     <ClInclude Include="Segment.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MarkovZombie.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="text.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="music.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="drop.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="gameover.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="kill.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="win.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
   </ItemGroup>
 </Project>

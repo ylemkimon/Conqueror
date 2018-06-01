@@ -1,4 +1,9 @@
 #pragma once
+
+#define USE_TEXTURE
+
+#define FRAME_INTERVAL 16
+
 #define MAP_SIZE 81
 #define INITIAL_RANGE 3
 
@@ -7,8 +12,10 @@
 
 #define STEP_SIZE 5
 
+#define CENTER_COORD (MAP_SIZE / 2 * STEP_SIZE)
 #define MAX_COORD ((MAP_SIZE - 1) * STEP_SIZE)
 
+#define FILL 1
 #define TERRITORY 19
 #define TAIL -1
 #define VISITED -2

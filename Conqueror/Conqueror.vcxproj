@@ -17,7 +17,7 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="MarkovZombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
@@ -27,7 +27,18 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="MarkovZombie.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="kill.wav" />
+    <Media Include="drop.wav" />
+    <Media Include="gameover.wav" />
+    <Media Include="music.wav" />
+    <Media Include="win.wav" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -59,11 +70,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\freeglut.lib')" />
     <Import Project="Old_OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\glut32.lib')" />
+    <Import Project="irrKlang.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\freeglut.lib')" />
     <Import Project="Old_OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\glut32.lib')" />
+    <Import Project="irrKlang.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />

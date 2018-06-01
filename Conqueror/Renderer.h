@@ -7,7 +7,9 @@ class Renderer {
 
 	int bar_target;
 public:
+#ifdef USE_TEXTURE
 	unsigned int texture_id;
+#endif
 
 	Renderer(Controller&);
 

@@ -23,11 +23,11 @@ void Character::move(int step)
 	shift(pos[0], pos[1], heading[0]);
 }
 
-void Character::die()
+void Character::die() // TODO : explosion effect, otherwise remove
 {
 }
 
-void Character::changeHeading(Direction newHeading)
+void Character::changeHeading(Direction newHeading) // TODO : move to Player
 {
 	if (heading[0] == NONE) {
 		int r = row();

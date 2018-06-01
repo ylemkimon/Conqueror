@@ -62,15 +62,23 @@ void Renderer::draw()
 	drawTrail();
 	drawCharacters();
 	drawUI();
-	/*glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-	glBegin(GL_POLYGON);
-		glTexCoord2f(0, 0); glVertex2f(30, 30);
-		glTexCoord2f(1, 0); glVertex2f(60, 30);
-		glTexCoord2f(1, 1); glVertex2f(60, 60);
-		glTexCoord2f(0, 1); glVertex2f(30, 60);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);*/
+
+#ifdef USE_TEXTURE // TODO : extract to function
+	if (controller.step < 0) {
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
+
+		float quarter = (float)MAP_SIZE / 4;
+		float texture_offset = controller.step == LOSE ? .5f : 0;
+		glBegin(GL_POLYGON);
+			glTexCoord2f(0, texture_offset + .5f); glVertex2f(quarter, 2 * quarter);
+			glTexCoord2f(0, texture_offset); glVertex2f(quarter, 3 * quarter);
+			glTexCoord2f(1, texture_offset); glVertex2f(3 * quarter, 3 * quarter);
+			glTexCoord2f(1, texture_offset + .5f); glVertex2f(3 * quarter, 2 * quarter);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+	}
+#endif
 }
 
 void Renderer::drawBorder()
@@ -79,7 +87,7 @@ void Renderer::drawBorder()
 	glRectf(-1, -1, 0, MAP_SIZE + 1);
 	glRectf(MAP_SIZE, -1, MAP_SIZE + 1, MAP_SIZE + 1);
 	glRectf(-1, -1, MAP_SIZE + 1, 0);
-	glRectf(-1, MAP_SIZE, MAP_SIZE + 1, MAP_SIZE + 1);
+	glRectf(-1, MAP_SIZE, MAP_SIZE + 1, MAP_SIZE + 1); // TODO : fill top area?
 }
 
 void Renderer::drawMap()
@@ -112,7 +120,7 @@ void Renderer::drawMap()
 	}
 }
 
-void Renderer::drawCharacters()
+void Renderer::drawCharacters() // TODO : move to Character
 {
 	for (const auto& character : controller.characters) {
 		float hue = character->color;
@@ -183,7 +191,7 @@ void Renderer::drawUI()
 
 	char buffer[10];
 	int len = sprintf(buffer, "KILLS: %d", ZOMBIE_COUNT + 1 - controller.characters.size());
-	int end = MAP_SIZE - len;
+	int end = MAP_SIZE - len - 1;
 
 	glColor3f(0, 0, 0);
 	glRasterPos2f(end, MAP_SIZE + 2.5f);
@@ -191,15 +199,16 @@ void Renderer::drawUI()
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, buffer[i]);
 	}
 
-	if (bar_target < controller.filled) {
-		bar_target++;
+	int diff = controller.filled - bar_target;
+	if (diff > 0) {
+		bar_target += diff < 80 ? (diff > 4 ? diff / 4 : 1) : 20;
 	}
 	float ratio = (float)bar_target / (MAP_SIZE * MAP_SIZE);
 	float bar_length = ratio * (end - start);
 
-	Color playerColor(p.color, .8f, .6f, 1);
-	glColor4fv(playerColor.rgba);
-	glRectf(start, MAP_SIZE + 1.5f, start + bar_length, MAP_SIZE + 5);
+	Color barColor(p.color, .8f, .4f, 1);
+	glColor4fv(barColor.rgba);
+	glRectf(start, MAP_SIZE + 1.5f, start + bar_length, MAP_SIZE + 5); // TODO : bar height
 
 	len = sprintf(buffer, "%.2f %%", ratio * 100);
 	if (bar_length < len + 1.3f) {
@@ -207,7 +216,7 @@ void Renderer::drawUI()
 	}
 	else {
 		glColor3f(1, 1, 1);
-		glRasterPos2f(start + bar_length - len - .8f, MAP_SIZE + 2.5f);
+		glRasterPos2f(start + bar_length - len - 1.2f, MAP_SIZE + 2.5f);
 	}
 	for (int i = 0; i < len; i++) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, buffer[i]);
