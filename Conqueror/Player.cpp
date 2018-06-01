@@ -1,7 +1,17 @@
+/** @file Player.cpp */
+
 #include "Player.h"
 
 #include <GL/glut.h>
 
+/**
+*   Draws a corner triangle twice.
+*
+*   @param[in] x     The x coordinate of the corner
+*   @param[in] y     The y coordinate of the corner
+*   @param[in] prev  Previous direction
+*   @param[in] curr  Current direction
+*/
 void drawCorner(int x, int y, Direction prev, Direction curr) {
 	if (prev == LEFT || curr == LEFT) {
 		x++;

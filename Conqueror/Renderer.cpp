@@ -1,9 +1,16 @@
+/** @file Renderer.cpp */
+
 #include "Renderer.h"
 #include "Segment.h"
 #include "Player.h"
 
 #include <GL/glut.h>
 
+/**
+*   Draws a heart.
+*
+*   @param[in] x  The x coordinate of the heart
+*/
 void drawHeart(int x) {
 	glRectf(x + .5f, MAP_SIZE + 5, x + 1.5f, MAP_SIZE + 4.5f);
 	glRectf(x + 2, MAP_SIZE + 5, x + 3, MAP_SIZE + 4.5f);

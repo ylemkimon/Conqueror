@@ -1,10 +1,18 @@
+/** @file Character.cpp */
+
 #include "Character.h"
 
 #include <GL/glut.h>
 
+/**
+*   Draws a circle with radius `0.7f`. It draws 102 vertices using `GL_TRIANGLE_FAN`.
+*
+*   @param[in] cx  The x coordinate of the center
+*   @param[in] cy  The y coordinate of the center
+*/
 void drawCircle(float cx, float cy) {
 	float t;
-	float x = 0.7f;
+	float x = 0.7f; // radius
 	float y = 0;
 
 	glBegin(GL_TRIANGLE_FAN);
@@ -26,7 +34,7 @@ Character::Character(Controller& controller, float color) :
 
 void Character::move(int step)
 {
-	if (this->step() != step) {
+	if (this->step() != step) { // out of sync
 		return;
 	}
 	if (step == 0) {
@@ -34,6 +42,7 @@ void Character::move(int step)
 
 		if ((pos[0] == 0 && heading[0] == LEFT) || (pos[0] == MAX_COORD && heading[0] == RIGHT) ||
 			(pos[1] == 0 && heading[0] == DOWN) || (pos[1] == MAX_COORD && heading[0] == UP)) {
+			// if at the boundary, set heading to NONE to allow moving toward center
 			heading[0] = NONE;
 			heading[1] = NONE;
 			return;

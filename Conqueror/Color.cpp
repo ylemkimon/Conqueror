@@ -1,5 +1,14 @@
+/** @file Color.cpp */
+
 #include "Color.h"
 
+/**
+*   Helper function for converting HSL colors to RGB colors.
+*
+*   @param[in] h   Hue relative to the target color
+*   @param[in] s   Saturation
+*   @param[in] l   Lightness
+*/
 float hslToRgb(float h, float s, float l)
 {
 	float q = l < .5f ? l * (s + 1) : l + s - l * s;

@@ -1,3 +1,5 @@
+/** @file Controller.cpp */
+
 #include <random>
 #include <ctime>
 
@@ -7,7 +9,10 @@
 
 #include <GL/glut.h>
 
+/** The number of possible character colors */
 #define HUES_LEGNTH 12
+
+/** The hue of possible character colors */
 static float HUES[HUES_LEGNTH] = { 0, .08f, .14f, .21f, .29f, .42f, .5f, .57f, .63f, .71f, .79f, .91f };
 
 Controller::Controller() : step(), data(), filled()
@@ -85,8 +90,8 @@ void Controller::updateFrame()
 		for (const auto& character : characters) {
 			int cr = character->row();
 			int cc = character->col();
-			if ((data[cr][cc] == TAIL && character->heading[0] != NONE) ||
-				(character != player && cr == r && cc == c)) {
+			if ((data[cr][cc] == TAIL && character->heading[0] != NONE) || // tail hit
+				(character != player && cr == r && cc == c)) { // collide with zombie
 				player->die();
 				playSound("death.wav");
 			}
@@ -100,7 +105,7 @@ void Controller::updateFrame()
 	else if (step == STEP_SIZE - 1) {
 		std::vector<Character*>::iterator it = characters.begin();
 		while (it != characters.end()) {
-			if (*it != player && data[(*it)->row()][(*it)->col()] > 0) {
+			if (*it != player && data[(*it)->row()][(*it)->col()] > 0) { // zombie in the new territory
 				it = characters.erase(it);
 				playSound("kill.wav");
 			}
