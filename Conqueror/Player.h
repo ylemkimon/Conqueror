@@ -22,6 +22,6 @@ public:
 	std::vector<Segment>& getTrail();
 
 	virtual void move(int);
-	virtual void die();
+	void die();
 	void changeHeading(Direction);
 };

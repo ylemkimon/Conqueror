@@ -23,10 +23,6 @@ void Character::move(int step)
 	shift(pos[0], pos[1], heading[0]);
 }
 
-void Character::die() // TODO : explosion effect, otherwise remove
-{
-}
-
 int Character::row()
 {
 	return pos[1] / STEP_SIZE + (pos[1] % STEP_SIZE != 0 && heading[0] == UP);

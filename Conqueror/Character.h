@@ -18,5 +18,4 @@ public:
 	Character(Controller&, float);
 
 	virtual void move(int);
-	virtual void die();
 };

@@ -101,7 +101,6 @@ void Controller::updateFrame()
 		std::vector<Character*>::iterator it = characters.begin();
 		while (it != characters.end()) {
 			if (*it != player && data[(*it)->row()][(*it)->col()] > 0) {
-				(*it)->die();
 				it = characters.erase(it);
 				playSound("kill.wav");
 			}
