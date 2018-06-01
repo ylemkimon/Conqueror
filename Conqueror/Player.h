@@ -23,4 +23,5 @@ public:
 	void resetTrail();
 	virtual void move(int);
 	virtual void die();
+	void changeHeading(Direction);
 };

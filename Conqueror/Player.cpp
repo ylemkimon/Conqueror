@@ -60,6 +60,22 @@ void Player::die()
 	life--;
 }
 
+void Player::changeHeading(Direction newHeading)
+{
+	if (heading[0] == NONE) {
+		int r = row();
+		int c = col();
+		shift(c, r, newHeading);
+		if (!controller.hasData(r, c) || controller.getData(r, c) == TAIL) {
+			return;
+		}
+	}
+	else if ((heading[0] == UP || heading[0] == DOWN) == (newHeading == UP || newHeading == DOWN)) {
+		return;
+	}
+	heading[1] = newHeading;
+}
+
 void Player::updateTrail()
 {
 	if (trail.empty() || trail.back().direction != heading[0]) {

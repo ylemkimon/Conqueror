@@ -27,22 +27,6 @@ void Character::die() // TODO : explosion effect, otherwise remove
 {
 }
 
-void Character::changeHeading(Direction newHeading) // TODO : move to Player
-{
-	if (heading[0] == NONE) {
-		int r = row();
-		int c = col();
-		shift(c, r, newHeading);
-		if (!controller.hasData(r, c) || controller.getData(r, c) == TAIL) {
-			return;
-		}
-	}
-	else if ((heading[0] == UP || heading[0] == DOWN) == (newHeading == UP || newHeading == DOWN)) {
-		return;
-	}
-	heading[1] = newHeading;
-}
-
 int Character::row()
 {
 	return pos[1] / STEP_SIZE + (pos[1] % STEP_SIZE != 0 && heading[0] == UP);
