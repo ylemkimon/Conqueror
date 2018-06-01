@@ -7,9 +7,8 @@
 
 #include <GL/glut.h>
 
-// TODO : remove similar color
-#define HUES_LEGNTH 24
-static float HUES[HUES_LEGNTH] = { 0, .04f, .08f, .11f, .14f, .18f, .21f, .25f, .29f, .38f, .42f, .46f, .5f, .53f, .57f, .6f, .63f, .67f, .71f, .75f, .79f, .83f, .87f, .91f };
+#define HUES_LEGNTH 12
+static float HUES[HUES_LEGNTH] = { 0, .08f, .14f, .21f, .29f, .42f, .5f, .57f, .63f, .71f, .79f, .91f };
 
 Controller::Controller() : step(), data(), filled()
 {
