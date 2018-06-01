@@ -70,13 +70,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\freeglut.lib')" />
     <Import Project="Old_OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\glut32.lib')" />
-    <Import Project="irrKlang.props" />
+    <Import Project="irrKlang.props" Condition="exists('$(IRRKLANG_DIR)\lib\irrKlang.lib')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\freeglut.lib')" />
     <Import Project="Old_OpenGL.props" Condition="exists('$(OPENGL_DIR)\lib\glut32.lib')" />
-    <Import Project="irrKlang.props" />
+    <Import Project="irrKlang.props" Condition="exists('$(IRRKLANG_DIR)\lib\irrKlang.lib')" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
