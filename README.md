@@ -49,4 +49,4 @@ irrKlang/
 
 Textures are loaded using [stb_image](https://github.com/nothings/stb) (public domain). It is included in the project. If error occurs, comment out `#define USE_TEXTURE` in `Constants.h`, however the game will not show victory/loss message.
 
-텍스쳐는 [stb_image](https://github.com/nothings/stb) 라이브러리(퍼블릭 도메인)를 사용합니다. 라이브러리는 프로젝트에 포함되어 있습니다. 오류가 발생할 경우, `Constants.h`의 `#define USE_TEXTURE`를 주석 처리하면 되나, 승리/패배 화면이 표시되지 않습니다.
+텍스쳐는 [stb_image](https://github.com/nothings/stb) 라이브러리(퍼블릭 도메인)를 사용하여 로딩됩니다. 라이브러리는 프로젝트에 포함되어 있습니다. 오류가 발생할 경우, `Constants.h`의 `#define USE_TEXTURE`를 주석 처리하면 되나, 승리/패배 화면이 표시되지 않습니다.
