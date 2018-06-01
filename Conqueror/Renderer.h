@@ -16,7 +16,5 @@ public:
 	void draw();
 	void drawBorder();
 	void drawMap();
-	void drawCharacters();
-	void drawTrail();
 	void drawUI();
 };

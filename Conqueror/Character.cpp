@@ -1,5 +1,24 @@
 #include "Character.h"
 
+#include <GL/glut.h>
+
+void drawCircle(float cx, float cy) {
+	float t;
+	float x = 0.7f;
+	float y = 0;
+
+	glBegin(GL_TRIANGLE_FAN);
+		glVertex2f(cx, cy);
+		for (int i = 0; i <= 100; i++) {
+			glVertex2f(x + cx, y + cy);
+
+			t = x;
+			x = COS_PI_50 * x - SIN_PI_50 * y;
+			y = SIN_PI_50 * t + COS_PI_50 * y;
+		}
+	glEnd();
+}
+
 Character::Character(Controller& controller, float color) :
 	controller(controller), color(color), pos(), heading()
 {
@@ -21,6 +40,16 @@ void Character::move(int step)
 		}
 	}
 	shift(pos[0], pos[1], heading[0]);
+}
+
+void Character::draw() {
+	Color shadowColor(color, .8f, .2f, 1);
+	glColor4fv(shadowColor.rgba);
+	drawCircle((float)pos[0] / STEP_SIZE + 0.65f, (float)pos[1] / STEP_SIZE + 0.35f);
+
+	Color playerColor(color, .8f, .45f, 1);
+	glColor4fv(playerColor.rgba);
+	drawCircle((float)pos[0] / STEP_SIZE + 0.5f, (float)pos[1] / STEP_SIZE + 0.5f);
 }
 
 int Character::row()

@@ -1,20 +1,33 @@
 #include "Player.h"
 
+#include <GL/glut.h>
+
+void drawCorner(int x, int y, Direction prev, Direction curr) {
+	if (prev == LEFT || curr == LEFT) {
+		x++;
+	}
+	if (prev == DOWN || curr == DOWN) {
+		y++;
+	}
+
+	glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 2; i++) {
+			int _x = x;
+			int _y = y;
+			glVertex2i(_x, _y);
+			shift(_x, _y, curr);
+			glVertex2i(_x, _y);
+			shift(_x, _y, prev);
+			glVertex2i(_x, _y);
+		}
+	glEnd();
+}
+
 Player::Player(Controller &controller, float color) :
 	Character(controller, color), trail(), base(), life(INITIAL_LIFE)
 {
 	pos[0] = CENTER_COORD;
 	pos[1] = CENTER_COORD;
-}
-
-int* Player::getBase()
-{
-	return base;
-}
-
-std::vector<Segment>& Player::getTrail()
-{
-	return trail;
 }
 
 void Player::move(int step)
@@ -37,6 +50,44 @@ void Player::move(int step)
 			base[1] = col();
 		}
 	}
+}
+
+void Player::draw()
+{
+	if (!trail.empty()) {
+		Color tailColor(color, .8f, .8f, .5f);
+		glColor4fv(tailColor.rgba);
+
+		Direction prev = NONE;
+		int x = base[1];
+		int y = base[0];
+		for (const auto& move : trail) {
+			if (prev != NONE) {
+				drawCorner(x, y, prev, move.direction);
+			}
+
+			if (move.direction == UP || move.direction == RIGHT) {
+				shift(x, y, move.direction);
+			}
+			if (move.length > 1) {
+				int x1 = x;
+				int y1 = y;
+				shift(x, y, move.direction, move.length - 1);
+				glRectf(x1, y1, x == x1 ? x + 1 : x, y == y1 ? y + 1 : y);
+			}
+			if (move.direction == DOWN || move.direction == LEFT) {
+				shift(x, y, move.direction);
+			}
+			prev = move.direction;
+		}
+		if (prev == heading[0]) {
+			glRectf(x, y, x + 1, y + 1);
+		}
+		else {
+			drawCorner(x, y, prev, heading[0]);
+		}
+	}
+	Character::draw();
 }
 
 void Player::die()

@@ -17,7 +17,6 @@ class Controller {
 #ifdef USE_SOUND
 	irrklang::ISoundEngine *SoundEngine;
 #endif
-
 public:
 	int step;
 	int filled;

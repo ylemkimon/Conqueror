@@ -4,44 +4,6 @@
 
 #include <GL/glut.h>
 
-void drawCircle(float cx, float cy) {
-	float t;
-	float x = 0.7f;
-	float y = 0;
-
-	glBegin(GL_TRIANGLE_FAN);
-		glVertex2f(cx, cy);
-		for (int i = 0; i <= 100; i++) {
-			glVertex2f(x + cx, y + cy);
-
-			t = x;
-			x = COS_PI_50 * x - SIN_PI_50 * y;
-			y = SIN_PI_50 * t + COS_PI_50 * y;
-		}
-	glEnd();
-}
-
-void drawCorner(int x, int y, Direction prev, Direction curr) {
-	if (prev == LEFT || curr == LEFT) {
-		x++;
-	}
-	if (prev == DOWN || curr == DOWN) {
-		y++;
-	}
-
-	glBegin(GL_TRIANGLES);
-		for (int i = 0; i < 2; i++) {
-			int _x = x;
-			int _y = y;
-			glVertex2i(_x, _y);
-			shift(_x, _y, curr);
-			glVertex2i(_x, _y);
-			shift(_x, _y, prev);
-			glVertex2i(_x, _y);
-		}
-	glEnd();
-}
-
 void drawHeart(int x) {
 	glRectf(x + .5f, MAP_SIZE + 5, x + 1.5f, MAP_SIZE + 4.5f);
 	glRectf(x + 2, MAP_SIZE + 5, x + 3, MAP_SIZE + 4.5f);
@@ -59,8 +21,9 @@ void Renderer::draw()
 {
 	drawBorder();
 	drawMap();
-	drawTrail();
-	drawCharacters();
+	for (const auto& character : controller.characters) {
+		character->draw();
+	}
 	drawUI();
 }
 
@@ -99,62 +62,6 @@ void Renderer::drawMap()
 			if (state < TERRITORY) {
 				controller.setData(r, c, state + 1);
 			}
-		}
-	}
-}
-
-void Renderer::drawCharacters() // TODO : move to Character
-{
-	for (const auto& character : controller.characters) {
-		float hue = character->color;
-
-		Color shadowColor(hue, .8f, .2f, 1);
-		glColor4fv(shadowColor.rgba);
-		drawCircle((float)character->pos[0] / STEP_SIZE + 0.65f, (float)character->pos[1] / STEP_SIZE + 0.35f);
-
-		Color playerColor(hue, .8f, .45f, 1);
-		glColor4fv(playerColor.rgba);
-		drawCircle((float)character->pos[0] / STEP_SIZE + 0.5f, (float)character->pos[1] / STEP_SIZE + 0.5f);
-	}
-}
-
-void Renderer::drawTrail()
-{
-	Player& p = *controller.getPlayer();
-	std::vector<Segment>& trail = p.getTrail();
-
-	if (!trail.empty()) {
-		Color tailColor(p.color, .8f, .8f, .5f);
-		glColor4fv(tailColor.rgba);
-
-		Direction prev = NONE;
-		int* base = p.getBase();
-		int x = base[1];
-		int y = base[0];
-		for (const auto& move : trail) {
-			if (prev != NONE) {
-				drawCorner(x, y, prev, move.direction);
-			}
-
-			if (move.direction == UP || move.direction == RIGHT) {
-				shift(x, y, move.direction);
-			}
-			if (move.length > 1) {
-				int x1 = x;
-				int y1 = y;
-				shift(x, y, move.direction, move.length - 1);
-				glRectf(x1, y1, x == x1 ? x + 1 : x, y == y1 ? y + 1 : y);
-			}
-			if (move.direction == DOWN || move.direction == LEFT) {
-				shift(x, y, move.direction);
-			}
-			prev = move.direction;
-		}
-		if (prev == p.heading[0]) {
-			glRectf(x, y, x + 1, y + 1);
-		}
-		else {
-			drawCorner(x, y, prev, p.heading[0]);
 		}
 	}
 }

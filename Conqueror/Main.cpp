@@ -40,12 +40,8 @@ int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(150, 100);
-	glutInitWindowSize(830, 880); // TODO : window size
+	glutInitWindowSize(830, 880);
 	glutCreateWindow("Conqueror");
-
-	// TODO : viewport
-	//glutGameModeString("1024x600:32@60");
-	//glutEnterGameMode();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

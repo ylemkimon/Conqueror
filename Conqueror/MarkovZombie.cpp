@@ -22,7 +22,6 @@ void MarkovZombie::move(int step) {
 		do {
 			r = row();
 			c = col();
-			// TODO : better random, markov chain, constantize
 			float rand = (float)std::rand() / RAND_MAX;
 			heading[1] = rand < 0.6f ? (Direction)((int)(rand / 0.15f) + 1) : heading[1];
 			shift(c, r, heading[1]);

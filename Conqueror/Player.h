@@ -18,10 +18,9 @@ public:
 	Player(Controller&, float);
 
 	int life;
-	int* getBase();
-	std::vector<Segment>& getTrail();
 
 	virtual void move(int);
+	virtual void draw();
 	void die();
 	void changeHeading(Direction);
 };

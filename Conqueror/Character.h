@@ -6,9 +6,9 @@
 class Character {
 protected:
 	Controller& controller;
+	int pos[2];
 public:
 	float color;
-	int pos[2];
 	Direction heading[2];
 
 	int row();
@@ -18,4 +18,5 @@ public:
 	Character(Controller&, float);
 
 	virtual void move(int);
+	virtual void draw();
 };
