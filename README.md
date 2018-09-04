@@ -1,12 +1,13 @@
 # Conqueror
 
-### 2018 Programming Methodology 001 Team Term Project
+### 2018-1 Programming Methodology 001 Team Term Project
+#### Electric and Computer Engineering @Seoul Nation University
 
 Splix.io-like territory expansion game using OpenGL
 
 > Team 37<br>
 2017-16751 김영민<br>
-2015-11514 전민재
+2015-1XXXX 전XX
 
 
 ## Design
