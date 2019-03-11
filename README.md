@@ -3,7 +3,7 @@
 ### 2018-1 Programming Methodology 001 Team Term Project
 #### Electric and Computer Engineering @Seoul Nation University
 
-Splix.io-like territory expansion game using OpenGL
+[Splix.io](http://splix.io/)-like territory expansion game using OpenGL
 
 > Team 37<br>
 2017-16751 김영민<br>
