@@ -6,7 +6,7 @@
 [Splix.io](http://splix.io/)-like territory expansion game using OpenGL
 
 > Team 37<br>
-2017-16751 김영민<br>
+2017-1XXXX 김X민<br>
 2015-1XXXX 전XX
 
 
